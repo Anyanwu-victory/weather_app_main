@@ -14,7 +14,7 @@
   --vt-c-black-mute: #282828;
 
   --vt-c-indigo: #2c3e50;
-  --vt-c-neutral-800: hsl(243, 27%, 20%);
+  --vt-c-neutral-800: rgb(39, 37, 65);
 
   --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
   --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
@@ -95,7 +95,7 @@ body {
     background-color 0.5s;
   line-height: 1.6;
   font-family: "BricolageGrotesque";
-  font-size: 15px;
+  font-size: 18px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

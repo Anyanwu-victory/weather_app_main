@@ -1,6 +1,7 @@
 <script setup>
 import Navbar from './components/Navbar.vue';
 import TheWelcomeTitle from './components/TheWelcomeTitle.vue';
+import WeatherContent from './components/WeatherContent.vue';
 </script>
 
 <template>
@@ -8,6 +9,8 @@ import TheWelcomeTitle from './components/TheWelcomeTitle.vue';
 
     <Navbar/>
     <TheWelcomeTitle/>
+
+    <WeatherContent/>
   </main>
 
 
