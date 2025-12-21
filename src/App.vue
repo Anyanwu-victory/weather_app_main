@@ -5,7 +5,7 @@ import WeatherContent from './components/WeatherContent.vue';
 </script>
 
 <template>
-  <main class="justify-center px-6 items-center md:px-10 text-white lg:px-40">
+  <main class="justify-center px-6 items-center md:px-10 text-white lg:px-40 overflow-y">
 
     <Navbar/>
     <TheWelcomeTitle/>
