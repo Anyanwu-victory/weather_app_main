@@ -35,13 +35,15 @@ const selectLocation = (city) => {
   <!-- Welcome text -->
   <div class="justify-center flex items-center">
     <span>
-      <h1 class="text-[30px] font-bold py-9 md:text-[40px]">How's the sky looking today?</h1>
+      <h1 class="text-[55px] font-bold py-9 md:text-[50px] text-center">How's the sky looking today?</h1>
     </span>
   </div>
   <!-- Welcome text -->
 
   <!-- Search input -->
-  <div class="flex justify-center items-center space-x-6">
+  <div class="flex flex-col md:flex-row justify-center items-center
+            gap-4 md:gap-6 mt-4 w-full max-w-2xl mx-auto">
+
     <!-- From Uiverse.io by LightAndy1 -->
     <div class="group bg-neutral-800">
       <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
@@ -68,16 +70,23 @@ const selectLocation = (city) => {
           </li>
         </ul>
       </div>
-
-
     </div>
 
+   
+    <button
+  class="w-full md:w-auto
+         px-6 rounded-xl bg-blue-500
+         font-semibold hover:text-blue-500
+         hover:bg-white btn"
+>
+  Search
+</button>
 
-    <button class=" px-6 rounded-xl bg-blue-500 
-     font-semibold hover:text-blue-500 hover:bg-white btn">Search</button>
+   
   </div>
 
-<WeatherContent/>
+
+  <WeatherContent />
 
 </template>
 
@@ -130,5 +139,9 @@ input:hover {
   cursor: pointer;
   height: 50px;
   text-align: center;
+}
+
+h1 {
+  line-height: 70px;
 }
 </style>

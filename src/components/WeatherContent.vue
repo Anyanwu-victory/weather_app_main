@@ -7,7 +7,7 @@ import HourlyForecast from './HourlyForecast.vue';
 </script>
 
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-5 mb-5">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-5 mb-20">
     <!-- Left section -->
     <div class="lg:col-span-2 space-y-6">
       <!-- Main weather card -->

@@ -17,6 +17,7 @@ const hours = [
     { time: "5 PM", temperature: 21, icon: Snow },
     { time: "6 PM", temperature: 25, icon: Storm },
     { time: "8 PM", temperature: 24, icon: Cloudy },
+    { time: "8 PM", temperature: 24, icon: Cloudy },
 ];
 
 const days = [
@@ -80,7 +81,7 @@ const selectDay = (day) => {
 
         <div class="space-y-3">
             <div v-for="hour in hours" :key="hour"
-                class="flex justify-between items-center bg-neutral-700/40 rounded-xl px-4 py-3">
+                class="flex justify-between items-center bg-neutral-700/40 rounded-xl px-4 py-2">
                 <div class="flex justify-between items-center space-x-2">
                     <img :src="hour.icon" class="w-10" />
                     <span>{{ hour.time }}</span>
