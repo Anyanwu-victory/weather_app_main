@@ -7,14 +7,14 @@ import HourlyForecast from './HourlyForecast.vue';
 </script>
 
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-5">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-5 mb-5">
     <!-- Left section -->
     <div class="lg:col-span-2 space-y-6">
       <!-- Main weather card -->
       <div class="rounded-2xl  p-6 flex justify-between items-center card-today">
         <div>
           <h2 class="text-2xl font-semibold">Berlin, Germany</h2>
-          <p class="text-sm opacity-80">Tuesday, Aug 5</p>
+          <p class="text-[16px] opacity-80 mt-2">Tuesday, Aug 5</p>
         </div>
 
         <div class="text-7xl font-bold text-italic flex space-x-6 justify-center items-center">

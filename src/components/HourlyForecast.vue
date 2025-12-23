@@ -1,54 +1,109 @@
 <script setup>
+import Sunny from '@/assets/images/icon-sunny.webp';
+import Rain from '@/assets/images/icon-rain.webp';
+import Fog from '@/assets/images/icon-fog.webp';
+import Overcast from '@/assets/images/icon-overcast.webp';
+import Snow from '@/assets/images/icon-snow.webp';
+import Storm from '@/assets/images/icon-storm.webp';
+import Cloudy from '@/assets/images/icon-partly-cloudy.webp';
+import { ref } from "vue";
+
 
 const hours = [
-  { time: "3 PM", temperature: 20,},
-  { time: "4 PM", temperature: 21,},
-  { time: "12 PM", temperature: 24, },
-  { time: "11 AM", temperature: 25, },
-  { time: "5 PM", temperature: 21,},
-  { time: "6 PM", temperature: 25,},
-  { time: "8 PM", temperature: 24,},
+    { time: "3 PM", temperature: 20, icon: Rain },
+    { time: "4 PM", temperature: 21, icon: Sunny },
+    { time: "12 PM", temperature: 24, icon: Fog },
+    { time: "2 PM", temperature: 25, icon: Overcast },
+    { time: "5 PM", temperature: 21, icon: Snow },
+    { time: "6 PM", temperature: 25, icon: Storm },
+    { time: "8 PM", temperature: 24, icon: Cloudy },
 ];
+
+const days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+];
+
+const isDayOpen = ref(false);
+const selectedDay = ref("Tuesday");
+
+const selectDay = (day) => {
+    selectedDay.value = day;
+    isDayOpen.value = false;
+};
+
 </script>
 
 <template>
-  
-  
+
+
     <!-- Right section -->
 
-      <!-- Hourly forecast -->
-      <div class="rounded-2xl bg-neutral-800 p-4 space-y-4">
+    <!-- Hourly forecast -->
+    <div class="rounded-2xl bg-neutral-800 p-4 space-y-4">
         <div class="flex justify-between items-center">
-          <h3 class="font-semibold">Hourly forecast</h3>
+            <h3 class="font-semibold">Hourly forecast</h3>
 
-          <select class="bg-neutral-700 rounded-lg px-2 py-2 text-sm">
-            <option>Tuesday</option>
-          </select>
+            <div class="relative">
+                <!-- Trigger -->
+                <button @click="isDayOpen = !isDayOpen"
+                    class="flex items-center gap-2 bg-neutral-700 rounded-lg px-3 py-2 text-sm">
+                    {{ selectedDay }}
+                    <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': isDayOpen }"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+                    </svg>
+                </button>
+
+                <!-- Dropdown -->
+                <div v-if="isDayOpen" class="absolute right-0 mt-2 w-40 rounded-xl
+           bg-neutral-800 border border-neutral-700
+           shadow-xl z-50">
+                    <ul class="py-1 text-sm">
+                        <li v-for="day in days" :key="day">
+                            <button @click="selectDay(day)" class="flex w-full justify-between items-center
+                 px-4 py-2 hover:bg-neutral-700 rounded-lg">
+                                {{ day }}
+                                <span v-if="selectedDay === day">✔</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
 
         <div class="space-y-3">
-          <div v-for="hour in hours" :key="hour"
-            class="flex justify-between items-center bg-neutral-700/40 rounded-xl px-4 py-3">
-            <div class=""></div>
-            <span>{{ hour.time }}</span>
-            <span>{{ hour.temperature }}°</span>
-          </div>
+            <div v-for="hour in hours" :key="hour"
+                class="flex justify-between items-center bg-neutral-700/40 rounded-xl px-4 py-3">
+                <div class="flex justify-between items-center space-x-2">
+                    <img :src="hour.icon" class="w-10" />
+                    <span>{{ hour.time }}</span>
+                </div>
+
+                <span>{{ hour.temperature }}°</span>
+            </div>
         </div>
-      </div>
+    </div>
 
 </template>
 
 <style scoped>
 .card-today {
-  background-image: url('../assets/images/bg-today-large.svg');
-  background-size: cover;
-  background-position: center;
-  line-height: 32px;
-  height: 270px;
+    background-image: url('../assets/images/bg-today-large.svg');
+    background-size: cover;
+    background-position: center;
+    line-height: 32px;
+    height: 270px;
 }
 
 .text-italic {
-  font-family: "DmSans", sans-serif;
-  font-style: italic;
+    font-family: "DmSans", sans-serif;
+    font-style: italic;
 }
 </style>

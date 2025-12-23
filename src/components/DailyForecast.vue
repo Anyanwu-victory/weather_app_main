@@ -21,6 +21,7 @@ const days = [
 
 <template>
 <!-- Daily forecast -->
+ <h1 class="font-bold">Daily Forecast</h1>
 
       <div class="grid grid-cols-4 sm:grid-cols-7 gap-4 text-center">
         <BaseCard v-for="day in days" :key="day.name" class="md:px-0">

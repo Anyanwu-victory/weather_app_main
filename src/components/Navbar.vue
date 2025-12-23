@@ -1,5 +1,17 @@
 <script setup>
+import { ref } from "vue";
 
+const isOpen = ref(false);
+
+const settings = ref({
+    temperature: "C",
+    wind: "kmh",
+    precipitation: "mm",
+});
+
+const toggleSetting = (group, value) => {
+    settings.value[group] = value;
+};
 </script>
 
 <template>
@@ -26,24 +38,92 @@
         </div>
 
         <!-- Select units button -->
-        <div class="flex justify-between space-x-2 px-5 bg-neutral-800 rounded-lg items-center">
-            <div class="">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
-                    <path fill="#fff"
-                        d="M14.125 7.406c.031.407.031.813 0 1.188l1 .594a.74.74 0 0 1 .344.843c-.344 1.313-1.063 2.5-2 3.469-.25.219-.625.281-.906.125l-1-.594c-.25.188-.72.469-1.032.594v1.156a.733.733 0 0 1-.562.719A7.765 7.765 0 0 1 6 15.5c-.313-.063-.563-.406-.563-.719v-1.156a5.54 5.54 0 0 1-1.03-.594l-1 .594c-.282.156-.657.094-.907-.125-.938-.969-1.656-2.156-2-3.469a.74.74 0 0 1 .344-.844l1-.593c-.032-.156-.032-.406-.032-.594 0-.156 0-.406.032-.594l-1-.562A.74.74 0 0 1 .5 6c.344-1.313 1.063-2.5 2-3.469.25-.219.625-.281.906-.125l1 .594c.25-.188.719-.469 1.032-.594V1.25c0-.344.218-.625.562-.719a7.766 7.766 0 0 1 3.969 0c.312.063.562.406.562.719v1.156c.313.125.781.406 1.031.594l1-.594c.282-.156.657-.094.907.125.937.969 1.656 2.156 2 3.469a.74.74 0 0 1-.344.844l-1 .562Zm-1.656 2c.25-1.312.25-1.469 0-2.781l1.375-.781c-.188-.563-.688-1.375-1.063-1.813l-1.375.782c-.969-.844-1.125-.938-2.375-1.375V1.843C8.75 1.812 8.281 1.75 8 1.75c-.313 0-.781.063-1.063.094v1.593c-1.25.438-1.375.532-2.375 1.376L3.188 4.03c-.468.532-.812 1.157-1.062 1.813l1.375.781c-.25 1.313-.25 1.469 0 2.781l-1.375.781c.188.563.688 1.376 1.063 1.813l1.374-.781c.97.844 1.125.937 2.375 1.375v1.594c.282.03.75.093 1.063.093.281 0 .75-.062 1.031-.094v-1.593c1.25-.438 1.375-.531 2.375-1.375l1.375.781c.375-.438.875-1.25 1.063-1.813l-1.375-.78ZM8 5c1.625 0 3 1.375 3 3 0 1.656-1.375 3-3 3a3 3 0 0 1-3-3c0-1.625 1.344-3 3-3Zm0 4.5A1.5 1.5 0 0 0 9.5 8c0-.813-.688-1.5-1.5-1.5A1.5 1.5 0 0 0 6.5 8c0 .844.656 1.5 1.5 1.5Z" />
-                </svg>
+        <div class="flex justify-between space-x-2 px-5  rounded-lg items-center">
+
+            <div class="relative">
+                <!-- Button -->
+                <button @click="isOpen = !isOpen" class="inline-flex items-center gap-2 px-4 py-2.5
+           bg-neutral-800 text-white rounded-lg
+           hover:bg-neutral-700 focus:ring-2 focus:ring-neutral-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
+                        <path fill="#fff"
+                            d="M14.125 7.406c.031.407.031.813 0 1.188l1 .594a.74.74 0 0 1 .344.843c-.344 1.313-1.063 2.5-2 3.469-.25.219-.625.281-.906.125l-1-.594c-.25.188-.72.469-1.032.594v1.156a.733.733 0 0 1-.562.719A7.765 7.765 0 0 1 6 15.5c-.313-.063-.563-.406-.563-.719v-1.156a5.54 5.54 0 0 1-1.03-.594l-1 .594c-.282.156-.657.094-.907-.125-.938-.969-1.656-2.156-2-3.469a.74.74 0 0 1 .344-.844l1-.593c-.032-.156-.032-.406-.032-.594 0-.156 0-.406.032-.594l-1-.562A.74.74 0 0 1 .5 6c.344-1.313 1.063-2.5 2-3.469.25-.219.625-.281.906-.125l1 .594c.25-.188.719-.469 1.032-.594V1.25c0-.344.218-.625.562-.719a7.766 7.766 0 0 1 3.969 0c.312.063.562.406.562.719v1.156c.313.125.781.406 1.031.594l1-.594c.282-.156.657-.094.907.125.937.969 1.656 2.156 2 3.469a.74.74 0 0 1-.344.844l-1 .562Zm-1.656 2c.25-1.312.25-1.469 0-2.781l1.375-.781c-.188-.563-.688-1.375-1.063-1.813l-1.375.782c-.969-.844-1.125-.938-2.375-1.375V1.843C8.75 1.812 8.281 1.75 8 1.75c-.313 0-.781.063-1.063.094v1.593c-1.25.438-1.375.532-2.375 1.376L3.188 4.03c-.468.532-.812 1.157-1.062 1.813l1.375.781c-.25 1.313-.25 1.469 0 2.781l-1.375.781c.188.563.688 1.376 1.063 1.813l1.374-.781c.97.844 1.125.937 2.375 1.375v1.594c.282.03.75.093 1.063.093.281 0 .75-.062 1.031-.094v-1.593c1.25-.438 1.375-.531 2.375-1.375l1.375.781c.375-.438.875-1.25 1.063-1.813l-1.375-.78ZM8 5c1.625 0 3 1.375 3 3 0 1.656-1.375 3-3 3a3 3 0 0 1-3-3c0-1.625 1.344-3 3-3Zm0 4.5A1.5 1.5 0 0 0 9.5 8c0-.813-.688-1.5-1.5-1.5A1.5 1.5 0 0 0 6.5 8c0 .844.656 1.5 1.5 1.5Z" />
+                    </svg>
+
+                    <span>Units</span>
+
+                    <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': isOpen }"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+                    </svg>
+                </button>
+
+                <div v-if="isOpen" class="absolute right-0 mt-3 w-64 rounded-xl
+         bg-neutral-800 border border-neutral-600
+         shadow-xl z-50  text-neutral-100 text-sm md:text-[18px]">
+                    <!-- Switch -->
+                    <div class="px-4 py-3 border-b border-neutral-700 font-medium">
+                        Switch to Imperial
+                    </div>
+
+                    <!-- Temperature -->
+                    <div class="px-4 py-3 border-b border-neutral-700">
+                        <p class="text-neutral-400 mb-2 text-sm">Temperature</p>
+
+                        <button @click="toggleSetting('temperature', 'C')"
+                            class="flex w-full justify-between items-center px-2 py-1.5 rounded hover:bg-neutral-700">
+                            Celsius (°C)
+                            <span v-if="settings.temperature === 'C'">✔</span>
+                        </button>
+
+                        <button @click="toggleSetting('temperature', 'F')"
+                            class="flex w-full justify-between items-center px-2 py-1.5 rounded hover:bg-neutral-700">
+                            Fahrenheit (°F)
+                            <span v-if="settings.temperature === 'F'">✔</span>
+                        </button>
+                    </div>
+
+                    <!-- Wind Speed -->
+                    <div class="px-4 py-3 border-b border-neutral-700">
+                        <p class="text-neutral-400 mb-2 text-sm">Wind Speed</p>
+
+                        <button @click="toggleSetting('wind', 'kmh')"
+                            class="flex w-full justify-between items-center px-2 py-1.5 rounded hover:bg-neutral-700">
+                            km/h
+                            <span v-if="settings.wind === 'kmh'">✔</span>
+                        </button>
+
+                        <button @click="toggleSetting('wind', 'mph')"
+                            class="flex w-full justify-between items-center px-2 py-1.5 rounded hover:bg-neutral-700">
+                            mph
+                            <span v-if="settings.wind === 'mph'">✔</span>
+                        </button>
+                    </div>
+
+                    <!-- Precipitation -->
+                    <div class="px-4 py-3">
+                        <p class="text-neutral-400 mb-2 text-sm">Precipitation</p>
+
+                        <button @click="toggleSetting('precipitation', 'mm')"
+                            class="flex w-full justify-between items-center px-2 py-1.5 rounded hover:bg-neutral-700">
+                            Millimeters (mm)
+                            <span v-if="settings.precipitation === 'mm'">✔</span>
+                        </button>
+
+                        <button @click="toggleSetting('precipitation', 'in')"
+                            class="flex w-full justify-between items-center px-2 py-1.5 rounded hover:bg-neutral-700">
+                            Inches (in)
+                            <span v-if="settings.precipitation === 'in'">✔</span>
+                        </button>
+                    </div>
+                </div>
             </div>
-
-            <select class="units text-[18px] border-none bg-neutral-800">
-                <option>Units</option>
-                <option>Units</option>
-                <option>Units</option>
-            </select>
-
         </div>
 
 
     </header>
+
+
 </template>
 
 <style scoped></style>
