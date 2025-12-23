@@ -1,16 +1,32 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const isOpen = ref(false);
 
-const settings = ref({
-    temperature: "C",
-    wind: "kmh",
-    precipitation: "mm",
+// global system
+const unitSystem = ref("metric"); // "metric" | "imperial"
+
+// derived settings
+const settings = computed(() => {
+    if (unitSystem.value === "metric") {
+        return {
+            temperature: "C",
+            wind: "kmh",
+            precipitation: "mm",
+        };
+    }
+
+    return {
+        temperature: "F",
+        wind: "mph",
+        precipitation: "in",
+    };
 });
 
-const toggleSetting = (group, value) => {
-    settings.value[group] = value;
+// toggle function
+const toggleUnitSystem = () => {
+    unitSystem.value =
+        unitSystem.value === "metric" ? "imperial" : "metric";
 };
 </script>
 
@@ -20,7 +36,8 @@ const toggleSetting = (group, value) => {
     <header class="justify-between flex flex-row py-5 md:py-10 md:px-15">
         <!-- Weather Logo -->
         <div class="">
-            <svg xmlns="http://www.w3.org/2000/svg" width="197" height="40" fill="none" viewBox="0 0 197 40" class="sm:w-20 w-25 md:w-40">
+            <svg xmlns="http://www.w3.org/2000/svg" width="197" height="40" fill="none" viewBox="0 0 197 40"
+                class="sm:w-20 w-25 md:w-40">
                 <g clip-path="url(#a)">
                     <path fill="#FF820A"
                         d="M25.093 1.054 21.16 0l-3.315 12.37-2.992-11.168-3.933 1.054 3.233 12.066L6.1 6.269l-2.88 2.88 8.834 8.832-11-2.947L0 18.967l12.019 3.22a8.144 8.144 0 1 1 15.869-.011l10.922 2.926 1.054-3.933-12.066-3.233 11-2.947-1.054-3.934-12.066 3.234 8.053-8.053-2.88-2.88-8.71 8.711 2.952-11.013Z" />
@@ -62,22 +79,24 @@ const toggleSetting = (group, value) => {
          bg-neutral-800 border border-neutral-600
          shadow-xl z-50  text-neutral-100 text-sm md:text-[18px]">
                     <!-- Switch -->
-                    <div class="px-4 py-3 border-b border-neutral-700 font-medium">
-                        Switch to Imperial
-                    </div>
+                    <button @click="toggleUnitSystem" class="w-full text-left px-4 py-3 border-b border-neutral-700
+         font-medium hover:bg-neutral-700">
+                        Switch to {{ unitSystem === "metric" ? "Imperial" : "Metric" }}
+                    </button>
+
 
                     <!-- Temperature -->
                     <div class="px-4 py-3 border-b border-neutral-700">
                         <p class="text-neutral-400 mb-2 text-sm">Temperature</p>
 
-                        <button @click="toggleSetting('temperature', 'C')"
-                            class="flex w-full justify-between items-center px-2 py-1.5 rounded hover:bg-neutral-700">
+                        <button class="flex w-full justify-between items-center px-2 py-2 rounded"
+                            :class="settings.temperature === 'C' ? 'bg-neutral-600' : ''">
                             Celsius (°C)
                             <span v-if="settings.temperature === 'C'">✔</span>
                         </button>
 
-                        <button @click="toggleSetting('temperature', 'F')"
-                            class="flex w-full justify-between items-center px-2 py-1.5 rounded hover:bg-neutral-700">
+                        <button class="flex w-full justify-between items-center px-2 py-2 rounded"
+                            :class="settings.temperature === 'F' ? 'bg-neutral-600' : ''">
                             Fahrenheit (°F)
                             <span v-if="settings.temperature === 'F'">✔</span>
                         </button>
@@ -87,14 +106,14 @@ const toggleSetting = (group, value) => {
                     <div class="px-4 py-3 border-b border-neutral-700">
                         <p class="text-neutral-400 mb-2 text-sm">Wind Speed</p>
 
-                        <button @click="toggleSetting('wind', 'kmh')"
-                            class="flex w-full justify-between items-center px-2 py-1.5 rounded hover:bg-neutral-700">
+                        <button class="flex w-full justify-between items-center px-2 py-2 rounded"
+                            :class="settings.wind === 'kmh' ? 'bg-neutral-600' : ''">
                             km/h
                             <span v-if="settings.wind === 'kmh'">✔</span>
                         </button>
 
-                        <button @click="toggleSetting('wind', 'mph')"
-                            class="flex w-full justify-between items-center px-2 py-1.5 rounded hover:bg-neutral-700">
+                        <button class="flex w-full justify-between items-center px-2 py-2 rounded"
+                            :class="settings.wind === 'mph' ? 'bg-neutral-600' : ''">
                             mph
                             <span v-if="settings.wind === 'mph'">✔</span>
                         </button>
@@ -104,14 +123,14 @@ const toggleSetting = (group, value) => {
                     <div class="px-4 py-3">
                         <p class="text-neutral-400 mb-2 text-sm">Precipitation</p>
 
-                        <button @click="toggleSetting('precipitation', 'mm')"
-                            class="flex w-full justify-between items-center px-2 py-1.5 rounded hover:bg-neutral-700">
+                        <button class="flex w-full justify-between items-center px-2 py-2 rounded"
+                            :class="settings.precipitation === 'mm' ? 'bg-neutral-600' : ''">
                             Millimeters (mm)
                             <span v-if="settings.precipitation === 'mm'">✔</span>
                         </button>
 
-                        <button @click="toggleSetting('precipitation', 'in')"
-                            class="flex w-full justify-between items-center px-2 py-1.5 rounded hover:bg-neutral-700">
+                        <button class="flex w-full justify-between items-center px-2 py-2 rounded"
+                            :class="settings.precipitation === 'in' ? 'bg-neutral-600' : ''">
                             Inches (in)
                             <span v-if="settings.precipitation === 'in'">✔</span>
                         </button>
@@ -119,11 +138,7 @@ const toggleSetting = (group, value) => {
                 </div>
             </div>
         </div>
-
-
     </header>
-
-
 </template>
 
 <style scoped></style>
