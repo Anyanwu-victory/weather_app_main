@@ -97,7 +97,7 @@ const selectLocation = (city) => {
   line-height: 28px;
   align-items: center;
   position: relative;
-  max-width: 420px;
+  /* max-width: 420px; */
   width: 100%;
   border-radius: 12px;
 }

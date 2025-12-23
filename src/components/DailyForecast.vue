@@ -24,10 +24,10 @@ const days = [
     <!-- Daily forecast -->
     <h1 class="font-bold">Daily Forecast</h1>
 
-    <div class="grid grid-cols-4 sm:grid-cols-7 gap-4 text-center mt-3">
-      <BaseCard v-for="day in days" :key="day.name" class="md:px-0">
+    <div class="grid grid-cols-3 sm:grid-cols-7 gap-4 text-center mt-3">
+      <BaseCard v-for="day in days" :key="day.name" class="px-0">
         <p class="text-sm">{{ day.name }}</p>
-        <img :src="day.icon" class="mx-auto w-6 md:w-14" />
+        <img :src="day.icon" class="mx-auto w-12 md:w-14" />
         <div class="text-sm flex  justify-around align-bottom px-0">
           <p>{{ day.high }}°</p>
           <p>{{ day.low }}°</p>

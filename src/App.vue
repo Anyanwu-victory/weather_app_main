@@ -34,7 +34,7 @@ fetchWeatherData()
 </script>
 
 <template>
-  <main class="justify-center px-[20px] items-center md:px-8 text-white lg:px-30 xl:px-40 overflow-y">
+  <main class="justify-center px-[20px] items-center md:px-8 text-white lg:px-30 xl:px-36 overflow-y">
 
     <Navbar/>
 
