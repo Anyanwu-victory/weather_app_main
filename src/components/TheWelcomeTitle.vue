@@ -1,5 +1,34 @@
 <script setup>
+import { ref, computed } from "vue";
+import WeatherContent from "./WeatherContent.vue";
 
+const search = ref("");
+const isOpen = ref(false);
+
+const locations = [
+  "Lagos",
+  "Abuja",
+  "Port Harcourt",
+  "Ibadan",
+  "Benin City",
+  "Enugu",
+  "Onitsha",
+  "Owerri",
+  "Asaba",
+  "Aba",
+];
+
+const filteredLocations = computed(() => {
+  if (!search.value) return [];
+  return locations.filter((city) =>
+    city.toLowerCase().includes(search.value.toLowerCase())
+  );
+});
+
+const selectLocation = (city) => {
+  search.value = city;
+  isOpen.value = false;
+};
 </script>
 
 <template>
@@ -13,12 +42,6 @@
 
   <!-- Search input -->
   <div class="flex justify-center items-center space-x-6">
-    <!-- <div class="bg-neutral-800 p-4.5 rounded-xl flex text-[18px]">
-      <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="none" viewBox="0 0 21 21"><path fill="#D4D3D9" d="M19.844 18.82c.195.196.195.508 0 .664l-.899.899c-.156.195-.468.195-.664 0l-4.726-4.727a.63.63 0 0 1-.117-.351v-.508c-1.446 1.21-3.282 1.953-5.313 1.953A8.119 8.119 0 0 1 0 8.625C0 4.172 3.633.5 8.125.5c4.453 0 8.125 3.672 8.125 8.125 0 2.031-.781 3.906-1.992 5.313h.508c.117 0 .234.078.351.156l4.727 4.726ZM8.125 14.875a6.243 6.243 0 0 0 6.25-6.25c0-3.438-2.813-6.25-6.25-6.25a6.243 6.243 0 0 0-6.25 6.25 6.219 6.219 0 0 0 6.25 6.25Z"/>
-      </svg>
-      <input type="search" placeholder="Search for a place..." 
-      class="text-neutral-100 pl-3 text-[18px] w-[20rem] border-0 "/>
-    </div> -->
     <!-- From Uiverse.io by LightAndy1 -->
     <div class="group bg-neutral-800">
       <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
@@ -28,7 +51,25 @@
           </path>
         </g>
       </svg>
-      <input class="input" type="search" placeholder="Search for a place..." />
+      <!-- Inpput field with dropdown -->
+      <input v-model="search" class="input" type="search" placeholder="Search for a place..." @focus="isOpen = true"
+        @input="isOpen = true" />
+
+      <!-- Dropdown -->
+      <div v-if="isOpen && filteredLocations.length" class="absolute top-full mt-2 w-full
+         bg-neutral-800 border border-neutral-700
+         rounded-xl shadow-xl z-50">
+        <ul>
+          <li v-for="city in filteredLocations" :key="city">
+            <button @click="selectLocation(city)" class="w-full text-left px-4 py-2
+               hover:bg-neutral-700 text-white">
+              {{ city }}
+            </button>
+          </li>
+        </ul>
+      </div>
+
+
     </div>
 
 
@@ -36,6 +77,7 @@
      font-semibold hover:text-blue-500 hover:bg-white btn">Search</button>
   </div>
 
+<WeatherContent/>
 
 </template>
 
@@ -83,6 +125,7 @@ input:hover {
   width: 21px;
   height: 21px;
 }
+
 .btn {
   cursor: pointer;
   height: 50px;
