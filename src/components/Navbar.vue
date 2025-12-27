@@ -1,33 +1,10 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref,} from "vue";
+import { useUnitsStore } from "@/stores/useUnitsStore";
 
 const isOpen = ref(false);
+const unitsStore = useUnitsStore();
 
-// global system
-const unitSystem = ref("metric"); // "metric" | "imperial"
-
-// derived settings
-const settings = computed(() => {
-    if (unitSystem.value === "metric") {
-        return {
-            temperature: "C",
-            wind: "kmh",
-            precipitation: "mm",
-        };
-    }
-
-    return {
-        temperature: "F",
-        wind: "mph",
-        precipitation: "in",
-    };
-});
-
-// toggle function
-const toggleUnitSystem = () => {
-    unitSystem.value =
-        unitSystem.value === "metric" ? "imperial" : "metric";
-};
 </script>
 
 <template>
@@ -79,9 +56,9 @@ const toggleUnitSystem = () => {
          bg-neutral-800 border border-neutral-600
          shadow-xl z-50  text-neutral-100 text-sm md:text-[18px]">
                     <!-- Switch -->
-                    <button @click="toggleUnitSystem" class="w-full text-left px-4 py-3 border-b border-neutral-700
+                    <button @click="unitsStore.toggleUnitSystem" class="w-full text-left px-4 py-3 border-b border-neutral-700
          font-medium hover:bg-neutral-700">
-                        Switch to {{ unitSystem === "metric" ? "Imperial" : "Metric" }}
+                        Switch to {{ unitsStore.unitSystem === "metric" ? "Imperial" : "Metric" }}
                     </button>
 
 
@@ -90,15 +67,15 @@ const toggleUnitSystem = () => {
                         <p class="text-neutral-400 mb-2 text-sm">Temperature</p>
 
                         <button class="flex w-full justify-between items-center px-2 py-2 rounded"
-                            :class="settings.temperature === 'C' ? 'bg-neutral-600' : ''">
+                            :class="unitsStore.units.temperature === 'C' ? 'bg-neutral-600' : ''">
                             Celsius (°C)
-                            <span v-if="settings.temperature === 'C'">✔</span>
+                            <span v-if="unitsStore.units.temperature === 'C'">✔</span>
                         </button>
 
                         <button class="flex w-full justify-between items-center px-2 py-2 rounded"
-                            :class="settings.temperature === 'F' ? 'bg-neutral-600' : ''">
+                            :class="unitsStore.units.temperature === 'F' ? 'bg-neutral-600' : ''">
                             Fahrenheit (°F)
-                            <span v-if="settings.temperature === 'F'">✔</span>
+                            <span v-if="unitsStore.units.temperature === 'F'">✔</span>
                         </button>
                     </div>
 
@@ -107,15 +84,15 @@ const toggleUnitSystem = () => {
                         <p class="text-neutral-400 mb-2 text-sm">Wind Speed</p>
 
                         <button class="flex w-full justify-between items-center px-2 py-2 rounded"
-                            :class="settings.wind === 'kmh' ? 'bg-neutral-600' : ''">
+                            :class="unitsStore.units.wind === 'kmh' ? 'bg-neutral-600' : ''">
                             km/h
-                            <span v-if="settings.wind === 'kmh'">✔</span>
+                            <span v-if="unitsStore.units.wind === 'kmh'">✔</span>
                         </button>
 
                         <button class="flex w-full justify-between items-center px-2 py-2 rounded"
-                            :class="settings.wind === 'mph' ? 'bg-neutral-600' : ''">
+                            :class="unitsStore.units.wind === 'mph' ? 'bg-neutral-600' : ''">
                             mph
-                            <span v-if="settings.wind === 'mph'">✔</span>
+                            <span v-if="unitsStore.units.wind === 'mph'">✔</span>
                         </button>
                     </div>
 
@@ -124,15 +101,15 @@ const toggleUnitSystem = () => {
                         <p class="text-neutral-400 mb-2 text-sm">Precipitation</p>
 
                         <button class="flex w-full justify-between items-center px-2 py-2 rounded"
-                            :class="settings.precipitation === 'mm' ? 'bg-neutral-600' : ''">
+                            :class="unitsStore.units.precipitation === 'mm' ? 'bg-neutral-600' : ''">
                             Millimeters (mm)
-                            <span v-if="settings.precipitation === 'mm'">✔</span>
+                            <span v-if="unitsStore.units.precipitation === 'mm'">✔</span>
                         </button>
 
                         <button class="flex w-full justify-between items-center px-2 py-2 rounded"
-                            :class="settings.precipitation === 'in' ? 'bg-neutral-600' : ''">
+                            :class="unitsStore.units.precipitation === 'in' ? 'bg-neutral-600' : ''">
                             Inches (in)
-                            <span v-if="settings.precipitation === 'in'">✔</span>
+                            <span v-if="unitsStore.units.precipitation === 'in'">✔</span>
                         </button>
                     </div>
                 </div>

@@ -1,36 +1,26 @@
 <script setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
+import { useWeatherStore } from '@/stores/useWeatherStore'
 import Navbar from './components/Navbar.vue';
 import TheWelcomeTitle from './components/TheWelcomeTitle.vue';
+import WeatherContent from './components/WeatherContent.vue';
 import ErrorPage from './components/ErrorPage.vue';
 
-// Error handling state
-const hasError = ref(false);
-const errorMessage = ref('')
+// Weather store
+const weatherStore = useWeatherStore()
 
-// Simulate API call (replace with actual weather API call)
-const fetchWeatherData = async () => {
-  try {
-    hasError.value = false
-    // Simulate API call - replace with actual weather API
-    // const response = await fetch('your-weather-api-endpoint')
-    // if (!response.ok) throw new Error('Failed to fetch weather data')
-
-    // For now, simulate a successful call
-    console.log('Weather data fetched successfully')
-  } catch (error) {
-    hasError.value = true
-    errorMessage.value = error.message || 'Unable to fetch weather data'
-  }
-}
+// Computed properties for error handling
+const hasError = computed(() => !!weatherStore.error)
+const errorMessage = computed(() => weatherStore.error)
+const hasWeatherData = computed(() => !!weatherStore.weatherData)
 
 // Handle retry from error page
 const handleRetry = () => {
-  fetchWeatherData()
+  weatherStore.initializeWeather()
 }
 
 // Initialize weather data on component mount
-fetchWeatherData()
+weatherStore.initializeWeather()
 </script>
 
 <template>
@@ -38,14 +28,15 @@ fetchWeatherData()
 
     <Navbar/>
 
+    <TheWelcomeTitle/>
 
-    <!-- Conditionally render content based on error state -->
+    <!-- Conditionally render content based on state -->
     <ErrorPage
-      v-if="hasError"
+      v-if="hasError && hasWeatherData"
       :error-message="errorMessage"
       @retry="handleRetry"
     />
-    <TheWelcomeTitle v-else />
+    <WeatherContent v-else-if="hasWeatherData" />
 
   </main>
 

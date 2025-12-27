@@ -1,24 +1,10 @@
+
 <script setup>
-import Sunny from '@/assets/images/icon-sunny.webp';
-import Rain from '@/assets/images/icon-rain.webp';
-import Fog from '@/assets/images/icon-fog.webp';
-import Overcast from '@/assets/images/icon-overcast.webp';
-import Snow from '@/assets/images/icon-snow.webp';
-import Storm from '@/assets/images/icon-storm.webp';
-import Cloudy from '@/assets/images/icon-partly-cloudy.webp';
-import { ref } from "vue";
+import { computed, ref } from 'vue'
+import { useWeatherStore } from '@/stores/useWeatherStore'
+import { getWeatherIcon } from '@/utils/weatherIcons'
 
-
-const hours = [
-    { time: "3 PM", temperature: 20, icon: Rain },
-    { time: "4 PM", temperature: 21, icon: Sunny },
-    { time: "12 PM", temperature: 24, icon: Fog },
-    { time: "2 PM", temperature: 25, icon: Overcast },
-    { time: "5 PM", temperature: 21, icon: Snow },
-    { time: "6 PM", temperature: 25, icon: Storm },
-    { time: "8 PM", temperature: 24, icon: Cloudy },
-    { time: "8 PM", temperature: 24, icon: Cloudy },
-];
+const weatherStore = useWeatherStore()
 
 const days = [
     "Monday",
@@ -29,15 +15,22 @@ const days = [
     "Saturday",
     "Sunday",
 ];
+const isDayOpen = ref(false)
+const selectedDay = ref('Today')
 
-const isDayOpen = ref(false);
-const selectedDay = ref("Tuesday");
+const hourlyForecast = computed(() => {
+  const hourly = weatherStore.hourlyWeather
+  if (!hourly) return []
 
-const selectDay = (day) => {
-    selectedDay.value = day;
-    isDayOpen.value = false;
-};
-
+  return hourly.time.slice(0, 8).map((time, index) => ({
+    time: new Date(time).toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+    }),
+    temperature: Math.round(hourly.temperature_2m[index]),
+    icon: getWeatherIcon(hourly.weathercode[index]),
+  }))
+})
 </script>
 
 <template>
@@ -80,7 +73,7 @@ const selectDay = (day) => {
         </div>
 
         <div class="space-y-3">
-            <div v-for="hour in hours" :key="hour"
+            <div v-for="hour in hourlyForecast" :key="hour.time"
                 class="flex justify-between items-center bg-neutral-700/40 rounded-xl px-4 py-2">
                 <div class="flex justify-between items-center space-x-2">
                     <img :src="hour.icon" class="w-10" />
