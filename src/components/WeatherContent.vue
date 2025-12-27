@@ -2,10 +2,10 @@
 import { computed } from 'vue'
 import { useWeatherStore } from '@/stores/useWeatherStore'
 import { useUnitsStore } from '@/stores/useUnitsStore'
-import Sunny from '@/assets/images/icon-sunny.webp';
 import StatsCards from './StatsCards.vue';
 import DailyForecast from './DailyForecast.vue';
 import HourlyForecast from './HourlyForecast.vue';
+import { getWeatherIcon } from '@/utils/weatherIcons';
 
 // Stores
 const weatherStore = useWeatherStore()
@@ -40,12 +40,6 @@ const currentDate = computed(() => {
   })
 })
 
-// Weather icon mapping (simplified - you can expand this)
-const getWeatherIcon = (weathercode) => {
-  // For now, return sunny icon for all weather codes
-  // You can implement proper weather code to icon mapping
-  return Sunny
-}
 </script>
 
 <template>
@@ -71,7 +65,7 @@ const getWeatherIcon = (weathercode) => {
       <!-- Main weather card -->
       <div class="rounded-2xl  p-6 flex flex-col justify-between items-center card-today md:flex-row text-center">
         <div class="pt-3">
-          <h2 class="text-2xl font-semibold">{{ currentLocation.name }}</h2>
+          <h2 class="text-2xl font-semibold">{{ currentLocation }}</h2>
           <p class="text-[16px] opacity-80 mt-2 md:pl-[2px] text-start">{{ currentDate }}</p>
         </div>
 

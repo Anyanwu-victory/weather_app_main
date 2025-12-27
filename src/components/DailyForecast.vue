@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useWeatherStore } from '@/stores/useWeatherStore';
-import { weatherIcon } from '@/utils/weatherIcons';
+import { getWeatherIcon } from '@/utils/weatherIcons';
 import BaseCard from './ui/BaseCard.vue';
 
 const weatherStore = useWeatherStore()
