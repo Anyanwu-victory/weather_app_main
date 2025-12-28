@@ -10,9 +10,9 @@ import ErrorPage from './components/ErrorPage.vue';
 const weatherStore = useWeatherStore()
 
 // Computed properties for error handling
-const hasError = computed(() => !!weatherStore.error)
 const errorMessage = computed(() => weatherStore.error)
-const hasWeatherData = computed(() => !!weatherStore.weatherData)
+const hasError = computed(() => weatherStore.error !== null)
+const hasWeatherData = computed(() => weatherStore.weatherData !== null)
 
 // Handle retry from error page
 const handleRetry = () => {
@@ -24,24 +24,27 @@ weatherStore.initializeWeather()
 </script>
 
 <template>
-  <main class="justify-center px-[20px] items-center md:px-8 text-white lg:px-30 xl:px-36 overflow-y">
+  <main class="justify-center px-[20px] items-center md:px-8 text-white lg:px-30 xl:px-36">
 
-    <Navbar/>
+    <!-- Navbar should ALWAYS show -->
+    <Navbar />
 
-    <TheWelcomeTitle/>
-
-    <!-- Conditionally render content based on state -->
+    <!-- Error state -->
     <ErrorPage
-      v-if="hasError && hasWeatherData"
+      v-if="hasError"
       :error-message="errorMessage"
       @retry="handleRetry"
     />
-    <WeatherContent v-else-if="hasWeatherData" />
+
+    <!-- Normal content (only when NO error and data exists) -->
+    <template v-else-if="hasWeatherData">
+      <TheWelcomeTitle />
+      <WeatherContent />
+    </template>
 
   </main>
-
-
 </template>
+
 
 <style scoped>
 

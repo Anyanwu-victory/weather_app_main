@@ -1,10 +1,13 @@
 //useWeatherStore.js
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { fetchWeather } from "@/services/apiService";
+import { useUnitsStore } from "./useUnitsStore";
 
 export const useWeatherStore = defineStore("weather", () => {
-  // State
+  const unitsStore = useUnitsStore();
+    // State
+  
   const weatherData = ref(null);
   const isLoading = ref(false);
   const error = ref(null);
@@ -37,13 +40,26 @@ export const useWeatherStore = defineStore("weather", () => {
       }
 
     } catch (err) {
-      error.value = err.message || "Failed to fetch weather data";
-      console.error("Weather fetch error:", err);
+      error.value = navigator.onLine
+        ? "We couldn’t connect to the weather service. Please try again."
+        : "No internet connection. Please check your network.";
+      weatherData.value = null;
     } finally {
       isLoading.value = false;
     }
   };
 
+ // 🔥 WATCH UNIT CHANGE → REFRESH DATA
+  watch(
+    () => unitsStore.unitSystem,
+    () => {
+      fetchWeatherData(
+        currentLocation.value.lat,
+        currentLocation.value.lon
+      );
+    }
+  );
+  
   const searchLocation = async (locationName) => {
     try {
       isLoading.value = true;
@@ -103,3 +119,4 @@ export const useWeatherStore = defineStore("weather", () => {
     initializeWeather
   };
 });
+

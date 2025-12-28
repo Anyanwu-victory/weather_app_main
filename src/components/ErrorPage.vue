@@ -1,3 +1,4 @@
+//error page
 <template>
   <div class="flex flex-col items-center justify-center min-h-[400px] text-center p-8">
     <!-- Error Icon -->
