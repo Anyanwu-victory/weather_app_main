@@ -1,4 +1,5 @@
 <script setup>
+
 import { computed } from 'vue'
 import { useWeatherStore } from '@/stores/useWeatherStore'
 import { useUnitsStore } from '@/stores/useUnitsStore'
@@ -6,10 +7,14 @@ import StatsCards from './StatsCards.vue';
 import DailyForecast from './DailyForecast.vue';
 import HourlyForecast from './HourlyForecast.vue';
 import { getWeatherIcon } from '@/utils/weatherIcons';
+import BaseLoader from './ui/BaseLoader.vue';
+
 
 // Stores
-const weatherStore = useWeatherStore()
-const unitsStore = useUnitsStore()
+const weatherStore = useWeatherStore();
+const unitsStore = useUnitsStore();
+const isLoading = computed(() => weatherStore.isLoading);
+const hasWeatherData = computed(() => !!weatherStore.weatherData);
 
 // Computed properties
 const currentWeather = computed(() => weatherStore.currentWeather)
@@ -48,7 +53,7 @@ const currentDate = computed(() => {
     <div class="mb-6">
       <svg class="w-24 h-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
       </svg>
     </div>
 
@@ -63,16 +68,27 @@ const currentDate = computed(() => {
     <!-- Left section -->
     <div class="lg:col-span-2 space-y-6">
       <!-- Main weather card -->
-      <div class="rounded-2xl  p-6 flex flex-col justify-between items-center card-today md:flex-row text-center">
-        <div class="pt-3">
-          <h2 class="text-2xl font-semibold">{{ currentLocation }}</h2>
-          <p class="text-[16px] opacity-80 mt-2 md:pl-[2px] text-start">{{ currentDate }}</p>
-        </div>
+      <div class="rounded-2xl  flex justify-center items-center card-today md:flex-row text-center">
+        <!-- 🔄 Loader -->
+        <BaseLoader v-if="isLoading" />
 
-        <div class="text-7xl font-bold text-italic flex space-x-8 justify-center items-center font-sans">
-          <img :src="getWeatherIcon(currentWeather?.weathercode)" alt="weather condition image" class="w-[99px] md:w-24" loading="lazy" />
-          <span> {{ temperature }}° </span>
-        </div>
+        <!-- 🌤 Weather content -->
+        <template v-else>
+          <div class="flex justify-between w-full flex-col md:flex-row items-center text-center p-6">
+          <div class="pt-3 text-center">
+            <h2 class="text-3xl md:text-2xl font-semibold ">{{ currentLocation }}</h2>
+            <p class="text-[16px] opacity-80 mt-2 md:pl-[2px] md:text-start">
+              {{ currentDate }}
+            </p>
+          </div>
+
+          <div class="text-7xl font-bold text-italic flex space-x-8 justify-center items-center">
+            <img :src="getWeatherIcon(currentWeather?.weathercode)" alt="weather condition image"
+              class="w-[99px] md:w-24" loading="lazy" />
+            <span>{{ temperature }}°</span>
+          </div>
+          </div>
+        </template>
       </div>
 
       <!-- Stats cards -->
@@ -109,5 +125,4 @@ const currentDate = computed(() => {
     background-image: url('../assets/images/bg-today-small.svg');
   }
 }
- 
 </style>
