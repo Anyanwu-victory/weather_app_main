@@ -8,6 +8,10 @@ const weatherStore = useWeatherStore()
 const isDayOpen = ref(false)
 const selectedDay = ref(null)
 
+const isLoading = computed(() => {
+  return weatherStore.isLoading || !weatherStore.hourlyWeather
+})
+
 /**
  * Convert date string → weekday (Monday, Tuesday, etc.)
  */
@@ -69,8 +73,25 @@ if (!selectedDay.value && days.value.length) {
  * Hours for selected day
  */
 const hourlyForecast = computed(() => {
-  return hourlyByDay.value[selectedDay.value] || []
-})
+  // 🟡 Loading → placeholders
+  if (isLoading.value) {
+    return Array.from({ length: 9 }, (_, i) => ({
+      id: i,
+      time: '',
+      temperature: '',
+      icon: null,
+      isPlaceholder: true
+    }))
+  }
+
+  // 🟢 Loaded → real data
+  return (hourlyByDay.value[selectedDay.value] || []).map((h, i) => ({
+    ...h,
+    id: i,
+    isPlaceholder: false
+  }))
+});
+
 
 const selectDay = (day) => {
   selectedDay.value = day
@@ -86,10 +107,11 @@ const selectDay = (day) => {
       <!-- Day dropdown -->
       <div class="relative">
         <button
+        :disabled = "isLoading"
           @click="isDayOpen = !isDayOpen"
           class="flex items-center gap-2 bg-neutral-700 rounded-lg px-3 py-2 text-sm"
         >
-          {{ selectedDay }}
+         {{ isLoading ? '--' : selectedDay }}
           <svg
             class="w-4 h-4 transition-transform"
             :class="{ 'rotate-180': isDayOpen }"
@@ -127,21 +149,28 @@ const selectDay = (day) => {
     </div>
 
     <!-- Hourly list -->
-    <div class="space-y-3">
+  <div class="space-y-4 ">
+  <div
+    v-for="hour in hourlyForecast"
+    :key="hour.id"
+    class="flex justify-between items-center
+           bg-neutral-700/40 rounded-xl px-4 py-2 h-[50px]"
+  >
+    <div class="flex items-center space-x-2">
       <div
-        v-for="hour in hourlyForecast"
-        :key="hour.time"
-        class="flex justify-between items-center
-               bg-neutral-700/40 rounded-xl px-4 py-2"
-      >
-        <div class="flex items-center space-x-2">
-          <img :src="hour.icon" class="w-10" />
-          <span>{{ hour.time }}</span>
-        </div>
+        v-if="hour.isPlaceholder"
+        class="w-10 h-10 rounded-md "
+      ></div>
 
-        <span>{{ hour.temperature }}°</span>
-      </div>
+      <img v-else :src="hour.icon" class="w-10" />
+
+      <span>{{ hour.time }}</span>
     </div>
+
+    <span>{{ hour.temperature }}°</span>
+  </div>
+</div>
+
   </div>
 </template>
 
